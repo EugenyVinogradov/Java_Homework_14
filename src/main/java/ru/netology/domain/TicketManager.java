@@ -3,6 +3,8 @@ package ru.netology.domain;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
+import java.util.Comparator;
+
 @AllArgsConstructor
 @NoArgsConstructor
 
@@ -54,6 +56,13 @@ public class TicketManager {
             throw new NotFoundByIdException("Element with id: " + id + " not found");
 
         }
+    }
+
+    public Ticket[] findAllNew(String from, String to, Comparator<Ticket> comparator) {
+        if (repository.findAllNew(from, to, comparator) == null) {
+            throw new NotFoundByAirportFromAndAirportToException("Elements with AirportFrom: " + from + "and AirportTo: " + to + " not found");
+        }
+        return repository.findAllNew(from, to, comparator);
     }
 
 }

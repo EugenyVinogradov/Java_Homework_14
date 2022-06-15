@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import java.util.Arrays;
+import java.util.Comparator;
 
 
 @Data
@@ -102,4 +103,30 @@ public class TicketManagerTest {
         Assertions.assertThrows(AlreadyExistsException.class, () -> manager.addNewTicket(ticket3));
     }
 
+    @Test
+    public void checkFindAllNew() {
+        Ticket[] actual = manager.findAllNew("SVO", "LED", ticket1);
+        Ticket[] expected = new Ticket[]{ticket1, ticket5, ticket3, ticket6};
+        Assertions.assertArrayEquals(expected, actual);
+    }
+    @Test
+    public void checkNotFoundTicketsByNewMethodFrom() {
+        TicketManager manager = new TicketManager(repository);
+        Assertions.assertThrows(NotFoundByAirportFromAndAirportToException.class, () -> manager.findAllNew("SVP", "LED", ticket1));
+    }
+    @Test
+    public void checkNotFoundTicketsByNewMethodTo() {
+        TicketManager manager = new TicketManager(repository);
+        Assertions.assertThrows(NotFoundByAirportFromAndAirportToException.class, () -> manager.findAllNew("SVO", "LEF", ticket1));
+    }
+    @Test
+    public void checkNotFoundTicketsFromAndByNewMethodTo() {
+        TicketManager manager = new TicketManager(repository);
+        Assertions.assertThrows(NotFoundByAirportFromAndAirportToException.class, () -> manager.findAllNew("SVP", "LEF", ticket1));
+    }
+    @Test
+    public void checkNotFoundTicketsByNewMethodWithoutParameters() {
+        TicketManager manager = new TicketManager(repository);
+        Assertions.assertThrows(NotFoundByAirportFromAndAirportToException.class, () -> manager.findAllNew(null, null, ticket1));
+    }
 }
