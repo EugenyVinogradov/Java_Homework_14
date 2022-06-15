@@ -4,6 +4,7 @@ package ru.netology.domain;
 import lombok.NoArgsConstructor;
 
 import java.util.Arrays;
+import java.util.Comparator;
 
 @NoArgsConstructor
 
@@ -36,6 +37,24 @@ public class Repository {
                 }
                 tmp[tmp.length - 1] = ticket;
                 Arrays.sort(tmp);
+                result = tmp;
+            }
+        }
+        if (result.length == 0) {
+            return null;
+        }
+        return result;
+    }
+    public Ticket[] findAllNew(String from, String to, Comparator<Ticket> comparator) {
+        Ticket[] result = new Ticket[0];
+        for (Ticket ticket : tickets) {
+            if (ticket.getAirportFrom() == from && ticket.getAirportTo() == to) {
+                Ticket[] tmp = new Ticket[result.length + 1];
+                for (int i = 0; i < result.length; i++) {
+                    tmp[i] = result[i];
+                }
+                tmp[tmp.length - 1] = ticket;
+                Arrays.sort(tmp, comparator);
                 result = tmp;
             }
         }
